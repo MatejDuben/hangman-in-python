@@ -121,23 +121,6 @@ def play_again():
     return False
   
 
-#Show the board and blanks for letters
-
-
-    
-  #print("_ "*len(secret_word_list))
-
-
-
-#display_blanks(solved_letters)
-
-
-# Python program to find the common elements 
-# in two lists 
-
-
-
-  
 
 #main
 def main():
