@@ -125,7 +125,7 @@ def play_again():
 
 
     
-  #print("_ "*len(secret_word))
+  #print("_ "*len(secret_word_list))
 
 
 
@@ -142,46 +142,52 @@ def play_again():
 #main
 def main():
   #variables
-  secret_word = convert_word_to_letters(get_random_word())
+  secret_word = get_random_word()
+  secret_word_list = convert_word_to_letters(secret_word)
+
   solved_letters = []
-  max_incorrect_ans = 10
+  max_incorrect_ans = 8
   incorrect_ans = 0
   bad_ans = False
   game_is_running = True
   play_again_var = False
-  blanks = "_"*len(secret_word)
+  blanks = "_"*len(secret_word_list)
   
   while game_is_running:
     #tu sa zobrazuju veci na terminaly
     display_board(hangman_boards(incorrect_ans=incorrect_ans))
     print(blanks)
     print(f"your incorrect answers: {incorrect_ans}")
-    aksed_letter = input('write one letter: ')    #pyta sa hraca na pismeno
+    if incorrect_ans == 7:
+      print(f"Now you have only one guess!")
+    aksed_letter = input('write one letter: ')    #pyta sa hraca na pismeno teda input
 
     if aksed_letter in solved_letters:  #ak som uz pismeno uhadol nemozem ho znovu napisat
-      print('repeat')
+      print("You've already guessed this letter, try again")
     else:
       
-      for i in range(len(secret_word)):   # ak je tam viac rovnakych tak sa vyplnia
-        if aksed_letter in secret_word[i]:
+      for i in range(len(secret_word_list)):   # ak je tam viac rovnakych tak sa vyplnia
+        if aksed_letter in secret_word_list[i]:
           solved_letters.append(aksed_letter)
           bad_ans = False
           
           blanks_list = list(blanks)
-          if secret_word[i] in aksed_letter:
-            blanks = blanks[:i] + secret_word[i] + blanks[i+1:]
+          if secret_word_list[i] in aksed_letter:
+            blanks = blanks[:i] + secret_word_list[i] + blanks[i+1:]
+         
+
         
         else:         #ak odpoviem zle pismeno nastavy sa na True a pripocita mi to zlu odpoved
           bad_ans = True
 
-
+    
 
       if bad_ans:   #ak je bad_ans true prida zlu odpoved
-        if aksed_letter not in secret_word:
+        if aksed_letter not in secret_word_list:
           incorrect_ans += 1
       
     #print(f'solved: {solved_letters}')
-    #common_member(secret_word, solved_letters) 
+    #common_member(secret_word_list, solved_letters) 
     
 
 
@@ -193,19 +199,25 @@ def main():
 
       game_is_running = False
       play_again_var = play_again()
-    elif incorrect_ans == max_incorrect_ans:
-      print('you loose')
+    
+    if incorrect_ans == max_incorrect_ans:
+      
+      print("********************************")
+      print(f'you loose!!!  \nYou guessed only: {len(solved_letters)} letters \nThe secret word was: "{secret_word}"')
+      print('')
+      print("********************************")
+
       game_is_running = False
       play_again_var = play_again()
     
     if play_again_var :
-      secret_word = convert_word_to_letters(get_random_word())
+      secret_word_list = convert_word_to_letters(get_random_word())
       solved_letters = []
-      max_incorrect_ans = 10
+      max_incorrect_ans = 8
       incorrect_ans = 0
       bad_ans = False
       game_is_running = True
-      blanks = "_"*len(secret_word)
+      blanks = "_"*len(secret_word_list)
       play_again_var = False
 
 
